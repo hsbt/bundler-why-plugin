@@ -1,0 +1,25 @@
+module Bundler
+  module Why
+    VERSION: String
+
+    class Error < StandardError
+    end
+
+    class DependencyResolver
+      def initialize: () -> void
+      def analyze: (String package_name) -> { name: String, version: String, direct_dependents: Array[Hash[String, String]], all_dependents: Array[Hash[String, String]], path: String }?
+      def find_spec: (String package_name) -> ::Gem::Specification?
+      def find_direct_dependents: (::Gem::Specification spec) -> Array[Hash[String, String]]
+      def find_all_dependents: (::Gem::Specification spec) -> Array[Hash[String, String]]
+      def find_dependency_chain: (String target_name) -> Array[Array[String]]
+    end
+
+    class CLI < Thor
+      def why: (String? package_name) -> void
+    end
+
+    class Plugin < ::Bundler::Plugin::API
+      def exec: (String command_name, Array[String] args) -> void
+    end
+  end
+end
