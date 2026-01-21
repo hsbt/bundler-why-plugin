@@ -6,6 +6,25 @@ require "bundler/why/dependency_resolver"
 module Bundler
   module Why
     class CLI < Thor
+      # Allow running `bundle why <package>` without specifying the command name
+      default_task :why
+
+      # Thor expects the first arg to be a task name. Bundler passes only
+      # the gem name (e.g. `minitest`), so route unknown commands to `why`.
+      def self.start(given_args = ARGV, config = {})
+        if given_args.empty?
+          return super
+        end
+
+        first = given_args.first
+        known = tasks.keys + %w[help]
+        if known.include?(first)
+          super(given_args, config)
+        else
+          super(["why"] + given_args, config)
+        end
+      end
+
       desc "why PACKAGE", "Show why a specific package is installed"
       def why(package_name = nil)
         if package_name.nil?
