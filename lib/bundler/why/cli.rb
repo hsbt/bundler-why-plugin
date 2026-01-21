@@ -58,9 +58,9 @@ module Bundler
         chains = resolver.find_dependency_chain(result[:name])
         
         if chains.any?
-          Bundler.ui.info("Used by:")
+          Bundler.ui.info("Dependency chain:")
           chains.each do |chain|
-            chain_str = chain.join(" > ")
+            chain_str = chain.join(" → ")
             Bundler.ui.info("  #{chain_str}")
           end
         else
