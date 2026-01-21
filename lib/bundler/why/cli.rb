@@ -19,7 +19,7 @@ module Bundler
         first = given_args.first
         known = tasks.keys + %w[help]
         if known.include?(first)
-          super(given_args, config)
+          super
         else
           super(["why"] + given_args, config)
         end
@@ -56,7 +56,7 @@ module Bundler
 
         # 依存関係チェーンを表示
         chains = resolver.find_dependency_chain(result[:name])
-        
+
         if chains.any?
           Bundler.ui.info("Dependency chain:")
           chains.each do |chain|

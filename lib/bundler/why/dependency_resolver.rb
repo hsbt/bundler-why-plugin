@@ -32,7 +32,7 @@ module Bundler
       # 直接的な依存元（親）を取得
       def find_direct_dependents(spec)
         dependents = []
-        
+
         @specs.each do |other_spec|
           other_spec.dependencies.each do |dep|
             if dep.name == spec.name
@@ -44,7 +44,7 @@ module Bundler
             end
           end
         end
-        
+
         dependents
       end
 
@@ -85,10 +85,10 @@ module Bundler
 
         chains = []
         gemfile_dependencies = @definition.dependencies.map(&:name)
-        
+
         # 直接の依存元を探す
         direct_dependents = find_direct_dependents(spec)
-        
+
         direct_dependents.each do |dependent|
           # 依存元がGemfileに記載されているかチェック
           if gemfile_dependencies.include?(dependent[:name])
@@ -113,16 +113,16 @@ module Bundler
       # 依存関係チェーンを再帰的に遡る
       def find_dependency_chain_recursive(current_name, path, gemfile_deps)
         chains = []
-        
+
         # 循環参照を防ぐため、すでにpathに含まれている場合は処理しない
         return chains if path.include?(current_name)
-        
+
         current_spec = find_spec(current_name)
         return chains unless current_spec
-        
+
         # 現在のgemの依存元を取得
         direct_dependents = find_direct_dependents(current_spec)
-        
+
         if direct_dependents.empty?
           # 依存元がない場合でも、Gemfileに記載されていれば追加
           if gemfile_deps.include?(current_name)
@@ -131,7 +131,7 @@ module Bundler
         else
           direct_dependents.each do |dependent|
             new_path = [current_name] + path
-            
+
             if gemfile_deps.include?(dependent[:name])
               # Gemfileに記載されているgemに到達したらチェーンを確定
               chains << ([dependent[:name]] + new_path)
@@ -142,7 +142,7 @@ module Bundler
             end
           end
         end
-        
+
         chains
       end
 
