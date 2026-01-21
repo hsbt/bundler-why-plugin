@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in bundler-why.gemspec
+# Specify your gem's dependencies in bundler-why-plugin.gemspec
 gemspec
 
 gem "irb"

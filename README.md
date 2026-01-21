@@ -9,13 +9,13 @@ This gem is a Bundler plugin that helps you understand the dependency tree of yo
 Install this plugin by running:
 
 ```bash
-bundle plugin install bundler-why
+bundle plugin install bundler-why-plugin
 ```
 
 To install from a local path during development:
 
 ```bash
-bundle plugin install bundler-why --source /path/to/bundler-why
+bundle plugin install bundler-why-plugin --source /path/to/bundler-why-plugin
 ```
 
 ## Usage
@@ -66,7 +66,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hsbt/bundler-why.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hsbt/bundler-why-plugin.
 
 ## License
 
