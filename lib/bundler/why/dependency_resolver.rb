@@ -108,6 +108,31 @@ module Bundler
         @definition.dependencies.map(&:name)
       end
 
+      # 依存関係ツリーを構築（各ノードの子を取得）
+      def build_dependents_tree(spec_name, visited = Set.new, depth = 0)
+        return [] if visited.include?(spec_name) || depth > 10
+
+        visited.add(spec_name)
+        spec = find_spec(spec_name)
+        return [] unless spec
+
+        direct_dependents = []
+        @specs.each do |other_spec|
+          other_spec.dependencies.each do |dep|
+            if dep.name == spec_name
+              direct_dependents << {
+                name: other_spec.name,
+                version: other_spec.version.to_s,
+                requirement: dep.requirement.to_s,
+                children: build_dependents_tree(other_spec.name, visited.dup, depth + 1)
+              }
+            end
+          end
+        end
+
+        direct_dependents
+      end
+
       private
 
       # 依存関係チェーンを再帰的に遡る

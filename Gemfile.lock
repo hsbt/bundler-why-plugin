@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bundler-why (0.1.0)
+    bundler-why-plugin (0.1.1)
       bundler (>= 2.4.0)
       thor (>= 1.0)
 
@@ -38,13 +38,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler-why!
+  bundler-why-plugin!
   irb
   minitest (~> 5.16)
   rake (~> 13.0)
 
 CHECKSUMS
-  bundler-why (0.1.0)
+  bundler-why-plugin (0.1.1)
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   erb (6.0.1) sha256=28ecdd99c5472aebd5674d6061e3c6b0a45c049578b071e5a52c2a7f13c197e5
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
