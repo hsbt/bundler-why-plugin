@@ -29,13 +29,16 @@ bundle why <package_name>
 ### Example
 
 ```bash
-$ bundle why json
-json (2.7.0)
+❯ bundle why ffi
+ffi (1.17.3)
 
 Directly required by:
-  bundler (2.5.0) [>= 0]
+  ├── libddwaf (1.30.0.0.0) [~> 1.0]
+  │     └── datadog (2.26.0) [~> 1.30.0.0.0]
+  └── rb-inotify (0.11.1) [~> 1.0]
+        └── listen (3.10.0) [~> 0.9, >= 0.9.10]
 
-Location: /Users/hsbt/.gem/ruby/3.3.0/gems/json-2.7.0/lib/json.rb
+Location: /Users/hsbt/.local/share/gem/specifications/ffi-1.17.3-arm64-darwin.gemspec
 ```
 
 ## How It Works
