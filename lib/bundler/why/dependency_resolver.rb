@@ -112,9 +112,12 @@ module Bundler
       def build_dependents_tree(spec_name, visited = Set.new, depth = 0)
         return [] if visited.include?(spec_name) || depth > 10
 
-        visited.add(spec_name)
         spec = find_spec(spec_name)
         return [] unless spec
+
+        # 現在のgemを訪問済みにマーク
+        new_visited = visited.dup
+        new_visited.add(spec_name)
 
         direct_dependents = []
         @specs.each do |other_spec|
@@ -124,7 +127,7 @@ module Bundler
                 name: other_spec.name,
                 version: other_spec.version.to_s,
                 requirement: dep.requirement.to_s,
-                children: build_dependents_tree(other_spec.name, visited.dup, depth + 1)
+                children: build_dependents_tree(other_spec.name, new_visited, depth + 1)
               }
             end
           end

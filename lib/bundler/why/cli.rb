@@ -61,7 +61,7 @@ module Bundler
         dependents_tree = result[:dependents_tree]
         if dependents_tree.any?
           Bundler.ui.info("Directly required by:")
-          display_tree(dependents_tree, "  ")
+          display_tree(dependents_tree, "")
         else
           Bundler.ui.info("Required by:")
           all_dependents = result[:all_dependents]
@@ -83,8 +83,8 @@ module Bundler
       def display_tree(items, prefix = "")
         items.each_with_index do |item, index|
           is_last = index == items.length - 1
-          current_prefix = is_last ? "└── " : "├── "
-          next_prefix = is_last ? "    " : "│   "
+          current_prefix = is_last ? "  └── " : "  ├── "
+          next_prefix = is_last ? "      " : "  │   "
 
           Bundler.ui.info("#{prefix}#{current_prefix}#{item[:name]} (#{item[:version]}) [#{item[:requirement]}]")
 
