@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require "thor"
+# Use Bundler's vendored Thor instead of the standalone gem
+require "bundler/vendored_thor"
 require "bundler/why/dependency_resolver"
 
 module Bundler
   module Why
-    class CLI < Thor
+    class CLI < Bundler::Thor
       # Allow running `bundle why <package>` without specifying the command name
       default_task :why
 
