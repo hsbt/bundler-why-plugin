@@ -19,7 +19,7 @@ module Bundler
         first = given_args.first
         known = tasks.keys + %w[help]
         if known.include?(first)
-          super(given_args, config)
+          super
         else
           super(["why"] + given_args, config)
         end
@@ -41,6 +41,9 @@ module Bundler
           exit 1
         end
 
+        # ツリー構造を追加
+        result[:dependents_tree] = resolver.build_dependents_tree(package_name)
+
         display_result(result, resolver)
       end
 
@@ -54,39 +57,40 @@ module Bundler
         Bundler.ui.info("#{result[:name]} (#{result[:version]})")
         Bundler.ui.info("")
 
-        # 依存関係チェーンを表示
-        chains = resolver.find_dependency_chain(result[:name])
-        
-        if chains.any?
-          Bundler.ui.info("Used by:")
-          chains.each do |chain|
-            chain_str = chain.join(" > ")
-            Bundler.ui.info("  #{chain_str}")
-          end
+        # ツリー形式で依存関係を表示
+        dependents_tree = result[:dependents_tree]
+        if dependents_tree.any?
+          Bundler.ui.info("Directly required by:")
+          display_tree(dependents_tree, "  ")
         else
-          # 直接の依存元を表示
-          direct_dependents = result[:direct_dependents]
-          if direct_dependents.any?
-            Bundler.ui.info("Directly required by:")
-            direct_dependents.each do |dependent|
-              Bundler.ui.info("  #{dependent[:name]} (#{dependent[:version]}) [#{dependent[:requirement]}]")
+          Bundler.ui.info("Required by:")
+          all_dependents = result[:all_dependents]
+          if all_dependents.any?
+            all_dependents.each do |dependent|
+              Bundler.ui.info("  #{dependent[:name]} (#{dependent[:version]})")
             end
           else
-            Bundler.ui.info("Required by:")
-            all_dependents = result[:all_dependents]
-            if all_dependents.any?
-              all_dependents.each do |dependent|
-                Bundler.ui.info("  #{dependent[:name]} (#{dependent[:version]})")
-              end
-            else
-              Bundler.ui.warn("Not required by any other packages (may be a direct dependency)")
-            end
+            Bundler.ui.warn("Not required by any other packages (may be a direct dependency)")
           end
         end
 
         Bundler.ui.info("")
         if result[:path]
           Bundler.ui.info("Location: #{result[:path]}")
+        end
+      end
+
+      def display_tree(items, prefix = "")
+        items.each_with_index do |item, index|
+          is_last = index == items.length - 1
+          current_prefix = is_last ? "└── " : "├── "
+          next_prefix = is_last ? "    " : "│   "
+
+          Bundler.ui.info("#{prefix}#{current_prefix}#{item[:name]} (#{item[:version]}) [#{item[:requirement]}]")
+
+          if item[:children] && item[:children].any?
+            display_tree(item[:children], prefix + next_prefix)
+          end
         end
       end
     end
